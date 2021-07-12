@@ -1,0 +1,18 @@
+pragma solidity ^0.6.7; //we want to soecify the solidty compiler version. the ^ is used so the contract can be used for later versions of the smart contract
+
+
+contract MyFirstContract {
+    
+    uint number; // creating a variable 
+    
+    function changeNumber(uint256 _num) public {  // specify this is a public function so that anyone can call it. we also have a variable called _num which is uint256 variable
+        number = _num; //allowing number variable to be passed through to the function
+        
+    }
+    
+    function getNumber() public view returns (uint256) { //it's a view function as not changing structure of the blockchain
+        return number;
+    }
+    
+    //
+}
