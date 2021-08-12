@@ -78,8 +78,24 @@ contract APIConsumer is ChainlinkClient {
         int timesAmount = 10**18;
         request.addInt("times", timesAmount);
         
-        // Sends the request -- sends this back to the oracle contract and pay the fee which is defined up at the top in the contructor
+        // Sends the request -- sends this back to the oracle contract and pay the fee which is defined up at the top in the constructor
         return sendChainlinkRequestTo(oracle, request, fee);
+        
+                /* ---------------------------------------------------------- CONTROL FLOW ----------------------------------------------------------
+    
+     - So when we run the return function "return sendChainlinkRequestTo(oracle, request, fee);"
+     - we're going to send the fee and send that request (sendChainlinkRequestTo()) to the oracle contract and emit data to the blockchain
+     - the chainlink node that runs that node will see that data and see that here's a job for me to run 
+     - it will perform an api request and get the result that we want
+     - it will then send the result back to the oracle contract
+     - The oracle contract will then go and call the fulfill function now and parse in the volume result we got and store it in this smart contract here
+     - It's like a request and recieve model where:
+                        - in your smart contract you make a request
+                        - a chainlink node gets that request 
+                        - and then in another transaction subsequently it will post a response and come back into your smart contract
+                        - it's not an instant thing like the price feeds, it's a multi step thing that happens over multiple transactions 
+    
+                 */
     }
     
     /**
@@ -100,4 +116,6 @@ contract APIConsumer is ChainlinkClient {
         LinkTokenInterface linkToken = LinkTokenInterface(chainlinkTokenAddress());
         require(linkToken.transfer(msg.sender, linkToken.balanceOf(address(this))), "Unable to transfer");
     }
+    
+
 }
